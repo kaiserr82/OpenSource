@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FIAE2GO.ViewModels"
+             xmlns:views="using:FIAE2GO.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FIAE2GO.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+    <Grid>
+        <!-- Start Screen -->
+        <Grid IsVisible="{Binding IsStartScreenVisible}" RowDefinitions="Auto, *">
+            <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"
+                    Command="{Binding OpenOptionsCommand}"
+                    Background="Transparent" BorderThickness="0"
+                    ToolTip.Tip="Optionen öffnen">
+                <Image Source="avares://FIAE2GO/Assets/exec.png" Width="24" Height="24" />
+            </Button>
+
+            <StackPanel Grid.Row="1" Spacing="15" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+                <TextBlock Text="FIAE2GO - Prüfungssimulation" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock Text="Prüfungsart wählen:" />
+                <ComboBox SelectedIndex="{Binding SelectedExamType}" HorizontalAlignment="Stretch">
+                    <ComboBoxItem>Gemischt</ComboBoxItem>
+                    <ComboBoxItem>Zwischenprüfung</ComboBoxItem>
+                    <ComboBoxItem>Abschlussprüfung</ComboBoxItem>
+                </ComboBox>
+
+                <TextBlock Text="Anzahl der Fragen (5-50):" />
+                <NumericUpDown Value="{Binding QuestionCount}" Minimum="5" Maximum="50" Increment="1" FormatString="0" />
+
+                <Button Content="Start" Command="{Binding StartCommand}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Margin="0,20,0,0">
+                    <Image Source="avares://FIAE2GO/Assets/next.png" Width="32"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <!-- Quiz View -->
+        <ContentControl Content="{Binding CurrentQuizViewModel}" IsVisible="{Binding IsQuizActive}" />
+        <!-- Options View -->
+        <ContentControl Content="{Binding CurrentOptionsViewModel}" IsVisible="{Binding IsOptionsActive}" />
+    </Grid>
+</UserControl>
